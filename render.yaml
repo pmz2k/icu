@@ -1,0 +1,16 @@
+﻿services:
+  - type: web
+    name: nhs-mock-epr-api
+    env: python
+    region: frankfurt
+    plan: free
+    branch: main
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_SALT
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./epr.db
+      - key: PYTHON_VERSION
+        value: 3.11.0
